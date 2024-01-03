@@ -1,8 +1,6 @@
 package pl.coderslab;
 
-
 import org.apache.commons.lang3.ArrayUtils;
-import org.w3c.dom.ls.LSOutput;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,12 +8,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class TaskManager {
-    static String tasks[][];
+    static String[][] tasks;
     static String fileTask = "tasks.csv";
+
     public static void main(String[] args) {
 
         tasks = tasksFromFile("tasks.csv");
@@ -41,20 +39,20 @@ public class TaskManager {
             System.exit(0);
         }
         try {
-                for (String line: Files.readAllLines(path)) {
-                    row +=1;
-                    columns = line.split(",").length;
-                }
+            for (String line : Files.readAllLines(path)) {
+                row += 1;
+                columns = line.split(",").length;
+            }
         } catch (IOException e) {
-                System.out.println("Nie można wyświetlić pliku");
+            System.out.println("Nie można wyświetlić pliku");
         }
-        taskArray = new String [row][columns];
-        try (Scanner scanner = new Scanner(path)){
-            while(scanner.hasNextLine()){
-              for (int i = 0; i < row; i++) {
-                    String [] line = scanner.nextLine().split(",");
-                    for (int j = 0; j < columns; j++ ) {
-                        taskArray[i][j] = line [j];
+        taskArray = new String[row][columns];
+        try (Scanner scanner = new Scanner(path)) {
+            while (scanner.hasNextLine()) {
+                for (int i = 0; i < row; i++) {
+                    String[] line = scanner.nextLine().split(",");
+                    for (int j = 0; j < columns; j++) {
+                        taskArray[i][j] = line[j];
                     }
                 }
             }
@@ -63,6 +61,7 @@ public class TaskManager {
         }
         return taskArray;
     }
+
     public static void optionSelect() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Choose option:");
@@ -91,19 +90,21 @@ public class TaskManager {
             }
         }
     }
-    public static void addTask (){
-        tasks = Arrays.copyOf(tasks,tasks.length+1);
-        tasks[tasks.length-1] = new String[3];
+
+    public static void addTask() {
+        tasks = Arrays.copyOf(tasks, tasks.length + 1);
+        tasks[tasks.length - 1] = new String[3];
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please add task description");
-        tasks[tasks.length-1][0]=scanner.nextLine();
+        tasks[tasks.length - 1][0] = scanner.nextLine();
         System.out.println("Please add task due date");
-        tasks[tasks.length-1][1]=scanner.nextLine();
+        tasks[tasks.length - 1][1] = scanner.nextLine();
         System.out.println("Is your task is important: true/false");
-        tasks[tasks.length-1][2]=scanner.nextLine();
+        tasks[tasks.length - 1][2] = scanner.nextLine();
     }
-    public static void listTask(){
-       int counter = 0;
+
+    public static void listTask() {
+        int counter = 0;
         for (int i = 0; i < tasks.length; i++) {
             System.out.print(i + " : ");
             for (int j = 0; j < tasks[i].length; j++) {
@@ -112,28 +113,30 @@ public class TaskManager {
             System.out.println();
         }
     }
-    public static void removeTask(){
+
+    public static void removeTask() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select number to remove");
         int counter = 0;
-        while(counter == 0) {
+        while (counter == 0) {
             try {
 
                 int index = getInt();
                 tasks = ArrayUtils.remove(tasks, index);
                 System.out.println("Value was successflly deleted");
-                counter +=1;
+                counter += 1;
             } catch (IndexOutOfBoundsException e) {
                 System.out.println("Incorect argument passed. Please give correct index number");
             }
         }
 
     }
-    public static void exitAndSave(){
-        try (FileWriter fileWriter = new FileWriter(fileTask,false)) {
-            for (int i = 0; i < tasks.length; i++) {
-                for (int j = 0; j < tasks[i].length; j++) {
-                    fileWriter.append(tasks[i][j]);
+
+    public static void exitAndSave() {
+        try (FileWriter fileWriter = new FileWriter(fileTask, false)) {
+            for (String[] task : tasks) {
+                for (String string : task) {
+                    fileWriter.append(string);
                 }
                 fileWriter.append("\n");
             }
@@ -142,9 +145,10 @@ public class TaskManager {
         }
 
     }
+
     public static int getInt() {
         Scanner scanner = new Scanner(System.in);
-        while(!scanner.hasNextInt()) {
+        while (!scanner.hasNextInt()) {
             System.out.println("Incorect argument passed. Please give correct number");
             scanner.next();
         }
