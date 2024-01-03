@@ -51,9 +51,7 @@ public class TaskManager {
             while (scanner.hasNextLine()) {
                 for (int i = 0; i < row; i++) {
                     String[] line = scanner.nextLine().split(",");
-                    for (int j = 0; j < columns; j++) {
-                        taskArray[i][j] = line[j];
-                    }
+                    System.arraycopy(line, 0, taskArray[i], 0, columns);
                 }
             }
         } catch (IOException e) {
@@ -104,7 +102,6 @@ public class TaskManager {
     }
 
     public static void listTask() {
-        int counter = 0;
         for (int i = 0; i < tasks.length; i++) {
             System.out.print(i + " : ");
             for (int j = 0; j < tasks[i].length; j++) {
@@ -115,7 +112,6 @@ public class TaskManager {
     }
 
     public static void removeTask() {
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Please select number to remove");
         int counter = 0;
         while (counter == 0) {
